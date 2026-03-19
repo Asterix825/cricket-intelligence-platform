@@ -1,0 +1,73 @@
+version: 2
+
+models:
+  - name: dim_team
+    columns:
+      - name: team_key
+        data_tests:
+          - not_null
+          - unique
+      - name: team_name
+        data_tests:
+          - unique
+
+  - name: dim_player
+    columns:
+      - name: player_key
+        data_tests:
+          - not_null
+          - unique
+      - name: player_name
+        data_tests:
+          - unique
+
+  - name: dim_match
+    columns:
+      - name: match_key
+        data_tests:
+          - not_null
+          - unique
+      - name: match_id
+        data_tests:
+          - unique
+
+  - name: fact_ball_events
+    columns:
+      - name: match_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_match')
+                field: match_key
+      - name: batting_team_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_team')
+                field: team_key
+      - name: batter_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_player')
+                field: player_key
+      - name: bowler_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_player')
+                field: player_key
+  - name: dim_date
+    columns:
+      - name: date_key
+        data_tests:
+          - not_null
+          - unique
+      - name: full_date
+        data_tests:
+          - not_null
+          - unique

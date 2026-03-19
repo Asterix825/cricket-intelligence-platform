@@ -1,0 +1,18 @@
+# Ignore ALL Virtual Environments anywhere in the project
+venv/
+*/venv/
+__pycache__/
+*.pyc
+*.pkl
+.env
+
+# Raw & Processed Data (DO NOT UPLOAD TO GITHUB)
+data/
+*.zip
+*.json
+*.csv
+
+# dbt Compiled Code & Logs
+data_warehouse/target/
+data_warehouse/dbt_packages/
+data_warehouse/logs/

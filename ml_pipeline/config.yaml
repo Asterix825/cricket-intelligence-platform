@@ -1,0 +1,23 @@
+database:
+  connection_string: "postgresql://postgres:post2508@localhost:5432/cricket_dw"
+
+data:
+  train_test_split_date: 20230101
+  target_col: "target"
+
+  features:
+    - team_total_runs
+    - team_run_rate
+    - total_wickets_lost
+
+model:
+  type: "xgboost"
+
+  params:
+    n_estimators: 200
+    max_depth: 6
+    learning_rate: 0.05
+    random_state: 42
+
+paths:
+  model_save_path: "./models/cricket_xgb_model.pkl"
