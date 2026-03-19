@@ -18,10 +18,10 @@ def read_root():
 @app.get("/api/v1/players/search")
 def search_players(name: str, db: Session = Depends(get_db)):
     """Search for a player by name to get their exact Cricsheet Surrogate Key"""
-    # Note: Adjust 'gold' schema name if your dbt configured it differently (e.g., gold_analytics)
+
     query = text("""
         SELECT player_key, player_name 
-        FROM gold.dim_player 
+        FROM gold_analytics.dim_player 
         WHERE player_name ILIKE :search_term
         LIMIT 10
     """)
