@@ -1,7 +1,6 @@
 {{ config(materialized='table') }}
 
 select
-    -- Match, Date, and Team keys remain exactly the same
     {{ dbt_utils.generate_surrogate_key(['cast(match_id as text)']) }} as match_key,
     cast(to_char(match_date, 'YYYYMMDD') as integer) as date_key,
     {{ dbt_utils.generate_surrogate_key(['lower(trim(batting_team))']) }} as batting_team_key,
@@ -11,15 +10,15 @@ select
     {{ dbt_utils.generate_surrogate_key(["'cricsheet'", 'bowler_id']) }} as bowler_key,
     {{ dbt_utils.generate_surrogate_key(["'cricsheet'", 'non_striker_id']) }} as non_striker_key,
     
+    innings,
+    ball_number,
     over_number,
-    
-    -- Standard Metrics
+
     batter_runs,
     extra_runs,
     total_runs,
     is_wicket,
-    
-    -- New ML Features!
+
     fielder_name,
     wide_runs,
     noball_runs

@@ -19,7 +19,7 @@ models:
           - unique
       - name: player_name
         data_tests:
-          - unique
+          - not_null
 
   - name: dim_match
     columns:
