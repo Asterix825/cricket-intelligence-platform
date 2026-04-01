@@ -1,0 +1,41 @@
+database:
+  connection_string: "postgresql://postgres:post2508@localhost:5432/cricket_dw" 
+
+data:
+  # The data loader will execute this blindly
+  sql_query: >
+    SELECT 
+      f.*,
+      CASE WHEN dm.winner = dt.team_name THEN 1 ELSE 0 END AS label_win
+    FROM feature_store.fact_delivery_state f
+    JOIN gold_analytics.dim_match dm 
+      ON f.match_key = dm.match_key
+    JOIN gold_analytics.dim_team dt 
+      ON f.batting_team_key = dt.team_key
+    WHERE f.balls_remaining >= 0
+  
+  temporal_col: "date_key"
+  train_test_split_date: 20230101
+  target_col: "label_win"
+  
+  features:
+    - innings
+    - current_score
+    - wickets_lost
+    - balls_remaining
+    - target_score
+    - runs_required
+    - crr
+    - rrr
+
+model:
+  type: "xgboost"
+  params:
+    objective: "binary:logistic" # Essential for probability outputs
+    n_estimators: 150
+    max_depth: 5
+    learning_rate: 0.05
+    random_state: 42
+
+paths:
+  model_save_path: "./artifacts/win_probability_xgb.pkl"
